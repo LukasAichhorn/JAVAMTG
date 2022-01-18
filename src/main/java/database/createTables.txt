@@ -1,0 +1,47 @@
+CREATE TABLE if not exists users (
+	user_id serial PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(50)  NOT NULL,
+	coins	NUMERIC	DEFAULT 20
+);
+CREATE TABLE if not exists users (
+	user_id serial PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(50)  NOT NULL,
+	coins	NUMERIC	DEFAULT 20
+);
+
+CREATE TABLE if not exists availablePackages(
+	package_id INT GENERATED ALWAYS AS IDENTITY,
+	card_id TEXT,
+	PRIMARY KEY(package_id),
+	CONSTRAINT fk_card
+		FOREIGN KEY(card_id)
+			REFERENCES cardlibrary(card_id)
+);
+
+CREATE TABLE IF NOT EXISTS personal_libary(
+user_id INT,
+card_id Text,
+CONSTRAINT fk_user_id
+		FOREIGN KEY(user_id)
+			REFERENCES users(user_id)
+CONSTRAINT fk_card_id
+		FOREIGN KEY(card_id)
+			REFERENCES cardlibrary(card_id)
+
+);
+
+alter table packagescontent
+drop constraint fk_packages_id,
+add constraint fk_package_id
+FOREIGN KEY(package_id)
+REFERENCES availablepackages(package_id)
+ON DELETE cascade;
+
+delete from availablepackages;
+delete from personal_libary;
+delete from cardlibrary;
+delete from open_trades;
+delete from packagescontent;
+delete from users
